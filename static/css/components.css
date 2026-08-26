@@ -1,0 +1,83 @@
+.chip {
+  display: inline-block;
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.chip--critical { background: var(--band-critical); color: #FFFFFF; }
+.chip--urgent { background: var(--band-urgent); color: #FFFFFF; }
+.chip--investigate { background: var(--band-investigate); color: var(--color-ink); }
+.chip--watch { background: var(--band-watch); color: var(--color-ink); }
+.chip--broad_watch { background: var(--band-broad-watch); color: var(--color-ink); }
+.chip--no_alert { background: var(--band-no-alert); color: var(--color-muted); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.badge--real {
+  border-left: 3px solid var(--color-navy);
+  color: var(--color-navy);
+  background: transparent;
+  padding-left: var(--space-xs);
+}
+
+.badge--simulated {
+  border: 1px dashed var(--color-simulated);
+  color: var(--color-simulated);
+}
+
+.badge--policy {
+  border: 1px dotted var(--color-muted);
+  color: var(--color-muted);
+}
+
+.skeleton-row {
+  height: 44px;
+  margin-bottom: var(--space-xs);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--color-sand) 25%, var(--color-surface) 37%, var(--color-sand) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-row { animation: none; }
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+.empty-state {
+  padding: var(--space-2xl);
+  text-align: center;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.error-banner {
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--color-error);
+  background: #FBEAEA;
+  color: var(--color-error);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.error-banner__code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
