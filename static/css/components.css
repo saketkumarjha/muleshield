@@ -7,8 +7,8 @@
   letter-spacing: 0.02em;
 }
 
-.chip--critical { background: var(--band-critical); color: #FFFFFF; }
-.chip--urgent { background: var(--band-urgent); color: #FFFFFF; }
+.chip--critical { background: var(--band-critical); color: var(--color-surface); }
+.chip--urgent { background: var(--band-urgent); color: var(--color-surface); }
 .chip--investigate { background: var(--band-investigate); color: var(--color-ink); }
 .chip--watch { background: var(--band-watch); color: var(--color-ink); }
 .chip--broad_watch { background: var(--band-broad-watch); color: var(--color-ink); }
@@ -71,7 +71,7 @@
 .error-banner {
   padding: var(--space-md) var(--space-lg);
   border: 1px solid var(--color-error);
-  background: #FBEAEA;
+  background: color-mix(in srgb, var(--color-error) 8%, var(--color-surface));
   color: var(--color-error);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-lg);
