@@ -4,8 +4,46 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MuleShield</title>
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/shell.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/queue.css" />
+  <link rel="stylesheet" href="/css/case.css" />
+  <link rel="stylesheet" href="/css/drawer.css" />
 </head>
 <body>
-  <h1>MuleShield placeholder</h1>
+  <div class="app-shell">
+    <div class="topbar">
+      <span class="topbar__wordmark">MuleShield</span>
+      <span class="topbar__badge">LOCAL DEMO</span>
+      <div class="topbar__meta">
+        <span id="topbar-model-version" class="font-mono">model: —</span>
+        <span id="topbar-audit-status">audit: —</span>
+        <label>
+          role:
+          <select id="role-switcher">
+            <option value="analyst">Analyst</option>
+            <option value="senior">Senior Analyst</option>
+            <option value="auditor">Auditor</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <nav class="sidebar">
+      <a class="nav-item" data-screen="queue" href="#/queue">Alert Queue</a>
+      <a class="nav-item" data-screen="transactions" href="#/transactions">Transactions</a>
+      <a class="nav-item" data-screen="ring" href="#/ring">Ring Explorer</a>
+      <a class="nav-item" data-screen="governance" href="#/governance">Governance</a>
+      <a class="nav-item" data-screen="model-card" href="#/model-card">Model Card</a>
+      <div class="sidebar__footer">
+        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>API</span><span>online</span></div>
+        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Model</span><span>loaded</span></div>
+        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Audit chain</span><span>valid</span></div>
+        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Data plane</span><span>simulated fixtures loaded</span></div>
+      </div>
+    </nav>
+    <main class="main" id="screen-mount"></main>
+  </div>
+  <script type="module" src="/js/main.js"></script>
 </body>
 </html>
