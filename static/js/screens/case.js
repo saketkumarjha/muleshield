@@ -40,6 +40,7 @@ export async function mountCase(mountEl, params) {
       <span class="font-mono">raw ${account.raw_score.toFixed(2)}</span>
       <span class="font-mono">calibrated ${account.display_score.toFixed(2)}</span>
       <span>${account.completeness}</span>
+      <button class="btn-secondary case-actions-toggle" id="btn-toggle-actions">Actions</button>
     </div>
     <div class="case-grid">
       <div class="case-grid__evidence">
@@ -64,4 +65,12 @@ export async function mountCase(mountEl, params) {
   mountEl.querySelector("#btn-propose-hold").addEventListener("click", () => {
     if (openDrawerFn) openDrawerFn(account);
   });
+
+  const actionsToggle = mountEl.querySelector("#btn-toggle-actions");
+  const actionsRail = mountEl.querySelector(".case-grid__actions");
+  if (actionsToggle && actionsRail) {
+    actionsToggle.addEventListener("click", () => {
+      actionsRail.classList.toggle("case-grid__actions--open");
+    });
+  }
 }

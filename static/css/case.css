@@ -19,6 +19,10 @@
   gap: var(--space-lg);
 }
 
+.case-actions-toggle {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .case-grid {
     grid-template-columns: 1fr;
@@ -36,6 +40,9 @@
   }
   .case-grid__actions--open {
     transform: translateX(0);
+  }
+  .case-actions-toggle {
+    display: inline-block;
   }
 }
 
@@ -85,7 +92,7 @@
 
 .btn-primary {
   background: var(--color-navy);
-  color: #FFFFFF;
+  color: var(--color-surface);
   border: none;
   border-radius: var(--radius-sm);
   padding: var(--space-sm) var(--space-md);
