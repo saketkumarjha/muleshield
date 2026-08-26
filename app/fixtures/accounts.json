@@ -1,0 +1,136 @@
+{
+  "model_version": "muleshield-gbm-v1.3.0",
+  "threshold_version": "thr-2026-08-01",
+  "holdout_total": 1817,
+  "displayed_total": 200,
+  "workload_hours_estimate": 10.0,
+  "evaluation_precision": 0.80,
+  "accounts": [
+    {
+      "account_id": "ACC09062",
+      "raw_score": 0.98,
+      "display_score": 0.94,
+      "band": "critical",
+      "status": "new",
+      "age_hours": 2,
+      "top_evidence_title": "Fan-in from 14 accounts within 6 hours",
+      "evidence_count": 4,
+      "completeness": "complete",
+      "recommended_action": "senior review",
+      "evidence": [
+        {
+          "type": "real",
+          "title": "Model signal: transaction velocity spike",
+          "contribution": 0.31,
+          "value": "14 inbound transfers in 6h vs. population median 0.4",
+          "provenance": "real",
+          "caveat": null
+        },
+        {
+          "type": "real",
+          "title": "Model signal: dormant-to-active reactivation",
+          "contribution": 0.22,
+          "value": "Account dormant 118 days, then 9 transfers in 24h",
+          "provenance": "real",
+          "caveat": null
+        },
+        {
+          "type": "simulated",
+          "title": "Graph finding: shared beneficiary with 3 flagged accounts",
+          "contribution": 0.19,
+          "value": "Beneficiary ACC22110 also receives from 3 other critical accounts",
+          "provenance": "simulated",
+          "caveat": "Simulated transaction plane — supplied dataset contains no real edges."
+        },
+        {
+          "type": "policy",
+          "title": "Policy rule: high-value first-time counterparty",
+          "contribution": null,
+          "value": "First transfer to ACC22110 exceeded INR 200,000",
+          "provenance": "policy",
+          "caveat": null
+        }
+      ],
+      "timeline": [
+        {"time": "2026-08-24T09:12:00Z", "label": "Account flagged by model"},
+        {"time": "2026-08-24T09:15:00Z", "label": "Assigned to queue"}
+      ]
+    },
+    {
+      "account_id": "ACC04471",
+      "raw_score": 0.91,
+      "display_score": 0.89,
+      "band": "critical",
+      "status": "open",
+      "age_hours": 5,
+      "top_evidence_title": "Pass-through pattern, funds drained within 40 minutes",
+      "evidence_count": 3,
+      "completeness": "complete",
+      "recommended_action": "senior review",
+      "evidence": [
+        {
+          "type": "real",
+          "title": "Model signal: time-to-drain",
+          "contribution": 0.28,
+          "value": "92% of inbound balance withdrawn within 40 minutes",
+          "provenance": "real",
+          "caveat": null
+        },
+        {
+          "type": "simulated",
+          "title": "Graph finding: 2-hop cash-out chain",
+          "contribution": 0.24,
+          "value": "Funds traced through ACC55021 to external cash-out node",
+          "provenance": "simulated",
+          "caveat": "Simulated transaction plane — supplied dataset contains no real edges."
+        },
+        {
+          "type": "policy",
+          "title": "Policy rule: round-number transfer",
+          "contribution": null,
+          "value": "Outbound transfer of exactly INR 150,000",
+          "provenance": "policy",
+          "caveat": null
+        }
+      ],
+      "timeline": [
+        {"time": "2026-08-24T06:40:00Z", "label": "Account flagged by model"},
+        {"time": "2026-08-24T06:44:00Z", "label": "Assigned to queue"},
+        {"time": "2026-08-24T08:02:00Z", "label": "Opened by analyst A. Rao"}
+      ]
+    },
+    {
+      "account_id": "ACC17733",
+      "raw_score": 0.72,
+      "display_score": 0.68,
+      "band": "urgent",
+      "status": "new",
+      "age_hours": 1,
+      "top_evidence_title": "Multiple small transfers below reporting threshold",
+      "evidence_count": 2,
+      "completeness": "partial",
+      "recommended_action": "analyst review",
+      "evidence": [
+        {
+          "type": "real",
+          "title": "Model signal: structuring pattern",
+          "contribution": 0.19,
+          "value": "6 transfers of INR 48,000-49,500 within 3 hours",
+          "provenance": "real",
+          "caveat": null
+        },
+        {
+          "type": "simulated",
+          "title": "Graph finding: unavailable",
+          "contribution": null,
+          "value": null,
+          "provenance": "simulated",
+          "caveat": "Graph fixture unavailable for this account."
+        }
+      ],
+      "timeline": [
+        {"time": "2026-08-25T14:10:00Z", "label": "Account flagged by model"}
+      ]
+    }
+  ]
+}
