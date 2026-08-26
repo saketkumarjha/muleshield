@@ -36,7 +36,7 @@ def create_hold(payload: dict = Body(...)):
     if not account_id or not action or not rationale:
         return error_response(
             status_code=422,
-            error_code="HOLD_MAKER_REQUIRED",
+            error_code="HOLD_FIELDS_REQUIRED",
             message="account_id, action, and rationale are all required.",
             retryable=False,
         )
@@ -86,15 +86,6 @@ def decide_hold(hold_id: str, payload: dict = Body(...)):
             resource_id=hold_id,
         )
 
-    if record["status"] != "pending":
-        return error_response(
-            status_code=409,
-            error_code="HOLD_ALREADY_DECIDED",
-            message=f"Hold {hold_id} was already {record['status']}.",
-            retryable=False,
-            resource_id=hold_id,
-        )
-
     checker = payload.get("checker")
     decision = payload.get("decision")
     note = payload.get("note")
@@ -102,7 +93,7 @@ def decide_hold(hold_id: str, payload: dict = Body(...)):
     if not checker or decision not in ("approve", "reject"):
         return error_response(
             status_code=422,
-            error_code="HOLD_MAKER_REQUIRED",
+            error_code="HOLD_DECISION_INVALID",
             message="checker and a valid decision (approve|reject) are required.",
             retryable=False,
             resource_id=hold_id,
@@ -116,6 +107,15 @@ def decide_hold(hold_id: str, payload: dict = Body(...)):
             retryable=False,
             resource_id=hold_id,
             corrective_action="Switch to an independent senior analyst identity to approve or reject.",
+        )
+
+    if record["status"] != "pending":
+        return error_response(
+            status_code=409,
+            error_code="HOLD_ALREADY_DECIDED",
+            message=f"Hold {hold_id} was already {record['status']}.",
+            retryable=False,
+            resource_id=hold_id,
         )
 
     now = datetime.now(timezone.utc)
