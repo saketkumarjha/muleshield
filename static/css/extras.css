@@ -1,0 +1,195 @@
+.screen-header {
+  margin-bottom: var(--space-lg);
+}
+
+.screen-header h1 {
+  font-size: 22px;
+  font-weight: 650;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.disclosure-banner {
+  padding: var(--space-md);
+  background: var(--color-sand);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.data-table thead th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 650;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table td {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 13px;
+}
+
+/* Ring Explorer */
+.ring-plane {
+  border: 1px dashed var(--color-simulated);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ring-plane__banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: color-mix(in srgb, var(--color-simulated) 10%, var(--color-surface));
+  color: var(--color-simulated);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  border-bottom: 1px dashed var(--color-simulated);
+}
+
+.ring-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+}
+
+.ring-canvas {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+.ring-edge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 13px;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.ring-edge-row__node {
+  font-family: var(--font-mono);
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-sand);
+}
+
+.ring-edge-row__arrow {
+  color: var(--color-muted);
+}
+
+.ring-why h2, .ring-inspector h2 {
+  font-size: 14px;
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.ring-why ul {
+  padding-left: var(--space-lg);
+  font-size: 13px;
+  margin: 0;
+}
+
+.ring-why li {
+  margin-bottom: var(--space-xs);
+}
+
+.ring-inspector {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-lg);
+}
+
+/* Governance */
+.gov-section {
+  margin-bottom: var(--space-2xl);
+}
+
+.gov-section h2 {
+  font-size: 15px;
+  margin: 0 0 var(--space-md) 0;
+}
+
+.evidence-status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+}
+
+.evidence-status-item__marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.evidence-status-item__marker--validated_real { background: var(--color-navy); }
+.evidence-status-item__marker--implemented_simulated { background: var(--color-surface); border: 2px dashed var(--color-simulated); }
+.evidence-status-item__marker--policy { background: var(--color-surface); border: 2px dotted var(--color-muted); }
+.evidence-status-item__marker--unavailable { background: var(--color-border); }
+
+.audit-chain-status {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+}
+
+.audit-chain-status--valid {
+  background: color-mix(in srgb, var(--color-verified) 8%, var(--color-surface));
+  border: 1px solid var(--color-verified);
+}
+
+.audit-chain-status--broken {
+  background: color-mix(in srgb, var(--color-error) 8%, var(--color-surface));
+  border: 1px solid var(--color-error);
+}
+
+.gov-warning-list {
+  font-size: 13px;
+  color: var(--color-warning);
+  padding-left: var(--space-lg);
+  margin: 0;
+}
+
+/* Model Card */
+.model-card-section {
+  margin-bottom: var(--space-xl);
+}
+
+.model-card-section h2 {
+  font-size: 15px;
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.model-card-limitations {
+  padding: var(--space-md);
+  background: color-mix(in srgb, var(--color-warning) 10%, var(--color-surface));
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+}
+
+.model-card-limitations ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+  font-size: 13px;
+}

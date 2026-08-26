@@ -1,0 +1,41 @@
+{
+  "runtime_status": {
+    "model_version": "muleshield-gbm-v1.3.0",
+    "threshold_version": "thr-2026-08-01",
+    "api_status": "online",
+    "audit_chain_status": "valid",
+    "data_plane_status": "simulated fixtures loaded"
+  },
+  "evidence_status_map": [
+    { "capability": "Transaction velocity / structuring model signals", "status": "validated_real", "note": "Validated on supplied real transaction data." },
+    { "capability": "Graph ring / cash-out pattern detection", "status": "implemented_simulated", "note": "Implemented on simulated data. Supplied dataset contains no real edges." },
+    { "capability": "High-value first-time counterparty rule", "status": "policy", "note": "Policy/integration contract, not model-derived." },
+    { "capability": "Live core-banking hold execution", "status": "unavailable", "note": "Not implemented — this build only records a proposed hold; no core system integration exists." }
+  ],
+  "threshold_registry": [
+    { "band": "critical", "raw_threshold": 0.90, "training_fpr_budget": 0.02, "training_recall": 0.71, "training_precision": 0.83, "holdout_alerts": 20, "holdout_precision": 0.80, "threshold_version": "thr-2026-08-01", "recommended_action": "senior review" },
+    { "band": "urgent", "raw_threshold": 0.65, "training_fpr_budget": 0.05, "training_recall": 0.64, "training_precision": 0.61, "holdout_alerts": 41, "holdout_precision": 0.58, "threshold_version": "thr-2026-08-01", "recommended_action": "analyst review" },
+    { "band": "investigate", "raw_threshold": 0.40, "training_fpr_budget": 0.10, "training_recall": 0.55, "training_precision": 0.39, "holdout_alerts": 96, "holdout_precision": 0.35, "threshold_version": "thr-2026-08-01", "recommended_action": "queue for triage" }
+  ],
+  "leakage_warnings": [
+    "Post-decision fields (e.g., account-closure flags recorded after a fraud case opened) are excluded from training features — see Model Card leakage exclusions.",
+    "Time-based holdout split used to avoid future-to-past leakage; no random shuffle across time was applied."
+  ],
+  "fairness_uncertainty": [
+    "Holdout precision at Critical (80.0%) is reported with n=20 true/false positives — small-sample interval, not a stable long-run estimate.",
+    "No demographic parity analysis has been run against protected attributes; this is a stated limitation, not a validated fairness claim."
+  ],
+  "audit_chain": {
+    "status": "valid",
+    "entry_count": 0,
+    "chain_head": "genesis",
+    "last_events": []
+  },
+  "problem_statement_coverage": [
+    { "requirement": "Rank accounts by mule risk", "status": "done" },
+    { "requirement": "Explain evidence behind each flag", "status": "done" },
+    { "requirement": "Human-in-the-loop hold approval (maker-checker)", "status": "done" },
+    { "requirement": "Graph-based ring detection", "status": "simulated" },
+    { "requirement": "Live core-banking integration", "status": "not_implemented" }
+  ]
+}

@@ -1,6 +1,7 @@
 import { apiPost, ApiError } from "../api.js";
 import { errorBanner } from "../components.js";
 import { registerHoldDrawer } from "./case.js";
+import { currentIdentity, currentRole, identityForRole } from "../identity.js";
 
 export function initHoldDrawer() {
   const overlay = document.createElement("div");
@@ -28,7 +29,8 @@ export function initHoldDrawer() {
       <h2>Propose hold — ${currentAccount.account_id}</h2>
       <div id="drawer-error"></div>
       <label for="maker">Maker identity</label>
-      <input id="maker" type="text" value="analyst.rao" />
+      <input id="maker" type="text" value="${currentIdentity()}" />
+      <p style="font-size:11px;color:var(--color-muted);">DEMO IDENTITY — NOT AUTHENTICATION. Current role: ${currentRole()}.</p>
       <label for="rationale">Rationale</label>
       <textarea id="rationale" rows="4">${currentAccount.top_evidence_title}</textarea>
       <div class="drawer__step">
@@ -61,6 +63,9 @@ export function initHoldDrawer() {
   }
 
   function renderPendingStep() {
+    const suggestedChecker = identityForRole("senior") !== currentHold.maker
+      ? identityForRole("senior")
+      : identityForRole("analyst");
     drawer.innerHTML = `
       <h2>Pending independent approval</h2>
       <p>Hold <span class="font-mono">${currentHold.hold_id}</span> proposed by <strong>${currentHold.maker}</strong>.</p>
@@ -68,7 +73,7 @@ export function initHoldDrawer() {
       <p>Switch to an independent senior analyst identity to approve or reject.</p>
       <div class="drawer__step">
         <label for="checker">Checker identity</label>
-        <input id="checker" type="text" value="senior.iyer" />
+        <input id="checker" type="text" value="${suggestedChecker}" />
         <label for="note">Decision note (required to reject)</label>
         <textarea id="note" rows="3"></textarea>
         <div id="drawer-error"></div>

@@ -1,0 +1,43 @@
+{
+  "identity": {
+    "name": "MuleShield Mule-Account Risk Model",
+    "version": "muleshield-gbm-v1.3.0",
+    "threshold_version": "thr-2026-08-01",
+    "family": "Gradient-boosted ensemble (3-model soft-vote)"
+  },
+  "training_holdout_split": {
+    "method": "Time-based split — train on activity before 2026-06-01, holdout after",
+    "train_accounts": 42318,
+    "holdout_accounts": 1817,
+    "labelled_mules_holdout": 20
+  },
+  "feature_regime": [
+    "Transaction velocity and burst statistics",
+    "Dormancy-to-activity reactivation patterns",
+    "Time-to-drain (balance withdrawal speed after inbound credit)",
+    "Structuring indicators (near-threshold repeated transfers)"
+  ],
+  "evaluation_protocol": "Holdout accounts scored once at threshold_version thr-2026-08-01; no threshold re-tuning on holdout.",
+  "operating_points": [
+    { "band": "critical", "raw_threshold": 0.90, "holdout_precision": 0.80, "holdout_alerts": 20 },
+    { "band": "urgent", "raw_threshold": 0.65, "holdout_precision": 0.58, "holdout_alerts": 41 },
+    { "band": "investigate", "raw_threshold": 0.40, "holdout_precision": 0.35, "holdout_alerts": 96 }
+  ],
+  "seed_sensitivity": "Re-trained across 5 random seeds; Critical-band holdout precision varied 0.76-0.83.",
+  "calibration": "Isotonic calibration applied to raw ensemble score to produce the display score shown in the queue and case screens.",
+  "leakage_exclusions": [
+    "Post-decision account-status fields (closure, freeze flags) excluded from training features.",
+    "Any field populated only after a fraud case was opened on the account was excluded."
+  ],
+  "rejected_experiments": [
+    "Device-fingerprint features rejected — supplied dataset had insufficient device coverage to validate signal.",
+    "Cross-account graph embeddings rejected for this version — training data does not contain real transaction edges."
+  ],
+  "limitations": [
+    "Holdout precision at Critical (80.0%) is based on only 20 alerts — a small-sample estimate, not a stable long-run rate.",
+    "Graph and feed evidence shown in the product are simulated; the model itself was not trained on graph features.",
+    "No fairness/demographic-parity analysis has been run against protected attributes.",
+    "Model has not been evaluated against adversarial or intentionally evasive account behavior."
+  ],
+  "deployment_design": "Local demo only. Model artifact and thresholds are loaded from a fixed local file at startup; no live retraining or feedback loop is implemented in this build."
+}

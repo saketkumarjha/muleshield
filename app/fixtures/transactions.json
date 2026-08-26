@@ -1,0 +1,96 @@
+{
+  "disclosure": "Transaction risk combines a real account band with simulated graph context and policy rules. It is not a trained transaction classifier and has no measured detection accuracy.",
+  "transactions": [
+    {
+      "transaction_id": "TXN-88213",
+      "time": "2026-08-24T09:12:00Z",
+      "source": "ACC09062",
+      "destination": "ACC22110",
+      "amount": 210000,
+      "channel": "IMPS",
+      "account_band": "critical",
+      "txn_band": "critical",
+      "txn_score": 0.91,
+      "hold_recommended": true,
+      "ring": "RING-4471"
+    },
+    {
+      "transaction_id": "TXN-88214",
+      "time": "2026-08-24T09:13:20Z",
+      "source": "ACC09062",
+      "destination": "ACC22110",
+      "amount": 198000,
+      "channel": "IMPS",
+      "account_band": "critical",
+      "txn_band": "critical",
+      "txn_score": 0.88,
+      "hold_recommended": true,
+      "ring": "RING-4471"
+    },
+    {
+      "transaction_id": "TXN-77012",
+      "time": "2026-08-24T06:41:10Z",
+      "source": "ACC04471",
+      "destination": "ACC55021",
+      "amount": 150000,
+      "channel": "NEFT",
+      "account_band": "critical",
+      "txn_band": "urgent",
+      "txn_score": 0.74,
+      "hold_recommended": true,
+      "ring": "RING-4471"
+    },
+    {
+      "transaction_id": "TXN-77013",
+      "time": "2026-08-24T06:44:02Z",
+      "source": "ACC55021",
+      "destination": "EXT-CASHOUT-01",
+      "amount": 142000,
+      "channel": "UPI",
+      "account_band": "watch",
+      "txn_band": "urgent",
+      "txn_score": 0.71,
+      "hold_recommended": false,
+      "ring": "RING-4471"
+    },
+    {
+      "transaction_id": "TXN-65510",
+      "time": "2026-08-25T14:10:05Z",
+      "source": "ACC17733",
+      "destination": "ACC90044",
+      "amount": 48500,
+      "channel": "UPI",
+      "account_band": "urgent",
+      "txn_band": "investigate",
+      "txn_score": 0.46,
+      "hold_recommended": false,
+      "ring": null
+    },
+    {
+      "transaction_id": "TXN-65511",
+      "time": "2026-08-25T14:32:47Z",
+      "source": "ACC17733",
+      "destination": "ACC90045",
+      "amount": 49200,
+      "channel": "UPI",
+      "account_band": "urgent",
+      "txn_band": "investigate",
+      "txn_score": 0.44,
+      "hold_recommended": false,
+      "ring": null
+    },
+    {
+      "transaction_id": "TXN-40098",
+      "time": "2026-08-23T11:02:15Z",
+      "source": "ACC33210",
+      "destination": "ACC09062",
+      "amount": 320000,
+      "channel": "RTGS",
+      "account_band": "watch",
+      "txn_band": "watch",
+      "txn_score": 0.22,
+      "hold_recommended": false,
+      "ring": "RING-4471"
+    }
+  ]
+}

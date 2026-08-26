@@ -1,0 +1,28 @@
+{
+  "ring_id": "RING-4471",
+  "time_window": "2026-08-24T06:00:00Z to 2026-08-24T09:20:00Z",
+  "why_flagged": [
+    "Fan-in: 14 accounts sent funds into ACC09062 within 6 hours",
+    "Pass-through: ACC04471 held inbound funds for under 40 minutes before forwarding",
+    "Shared beneficiary: ACC22110 receives from 3 other critical-band accounts",
+    "Time-to-drain: 92% of inbound balance withdrawn within 40 minutes at ACC04471"
+  ],
+  "nodes": [
+    { "id": "ACC09062", "type": "account", "band": "critical", "label": "ACC09062" },
+    { "id": "ACC04471", "type": "account", "band": "critical", "label": "ACC04471" },
+    { "id": "ACC22110", "type": "beneficiary", "band": "critical", "label": "ACC22110" },
+    { "id": "ACC55021", "type": "account", "band": "watch", "label": "ACC55021" },
+    { "id": "EXT-CASHOUT-01", "type": "cashout", "band": null, "label": "External cash-out" },
+    { "id": "ACC33210", "type": "source", "band": "watch", "label": "ACC33210" },
+    { "id": "SRC-A", "type": "source", "band": null, "label": "Fan-in source A" },
+    { "id": "SRC-B", "type": "source", "band": null, "label": "Fan-in source B" }
+  ],
+  "edges": [
+    { "from": "SRC-A", "to": "ACC09062", "amount": 45000, "channel": "UPI", "timestamp": "2026-08-24T06:05:00Z" },
+    { "from": "SRC-B", "to": "ACC09062", "amount": 51000, "channel": "UPI", "timestamp": "2026-08-24T06:12:00Z" },
+    { "from": "ACC33210", "to": "ACC09062", "amount": 320000, "channel": "RTGS", "timestamp": "2026-08-24T07:40:00Z" },
+    { "from": "ACC09062", "to": "ACC22110", "amount": 210000, "channel": "IMPS", "timestamp": "2026-08-24T09:12:00Z" },
+    { "from": "ACC04471", "to": "ACC55021", "amount": 150000, "channel": "NEFT", "timestamp": "2026-08-24T06:41:10Z" },
+    { "from": "ACC55021", "to": "EXT-CASHOUT-01", "amount": 142000, "channel": "UPI", "timestamp": "2026-08-24T06:44:02Z" }
+  ]
+}
