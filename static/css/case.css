@@ -1,0 +1,107 @@
+.case-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.case-header__id {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 7fr 3fr 2fr;
+  gap: var(--space-lg);
+}
+
+@media (max-width: 1024px) {
+  .case-grid {
+    grid-template-columns: 1fr;
+  }
+  .case-grid__actions {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--color-surface);
+    box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+    transform: translateX(100%);
+    transition: transform 180ms ease;
+  }
+  .case-grid__actions--open {
+    transform: translateX(0);
+  }
+}
+
+.evidence-row {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.evidence-row__title {
+  font-weight: 650;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.evidence-row__value {
+  color: var(--color-muted);
+  font-size: 13px;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.evidence-row__caveat {
+  font-size: 12px;
+  color: var(--color-warning);
+  margin: var(--space-xs) 0 0 0;
+}
+
+.semantics-caveat {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-sand);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.action-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  height: 36px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  height: 36px;
+  cursor: pointer;
+  font-size: 13px;
+}
