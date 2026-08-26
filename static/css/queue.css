@@ -1,0 +1,85 @@
+.queue-header {
+  margin-bottom: var(--space-lg);
+}
+
+.queue-header h1 {
+  font-size: 22px;
+  font-weight: 650;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.queue-header__summary {
+  color: var(--color-muted);
+  font-size: 13px;
+  margin: 0 0 var(--space-2xs) 0;
+}
+
+.queue-header__scope {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+.queue-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+}
+
+.queue-tab {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-muted);
+  border-bottom: 2px solid transparent;
+}
+
+.queue-tab--active {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-navy);
+  font-weight: 650;
+}
+
+.queue-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.queue-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  text-align: left;
+  font-size: 12px;
+  font-weight: 650;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.queue-table tbody tr {
+  height: 44px;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.queue-table tbody tr:hover,
+.queue-table tbody tr:focus {
+  background: var(--color-sand);
+  outline: none;
+}
+
+.queue-table tbody tr.queue-row--selected {
+  background: var(--color-sand);
+  border-left: 3px solid var(--color-navy);
+}
+
+.queue-table td {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 13px;
+}
