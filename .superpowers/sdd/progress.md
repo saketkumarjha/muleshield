@@ -13,4 +13,4 @@ Plan: docs/superpowers/plans/2026-08-26-muleshield-frontend.md
 - Task 9: complete (commits 6c9a9c8..6a5b054, review clean)
 - Task 10: complete (commits 6a5b054..6f7811e, review clean after hex/mobile-toggle fix)
 - Task 11: complete (commits 6f7811e..4fa3706, review clean)
-- Task 12: pending
+- Task 12: complete (commits 4fa3706..744f245, review clean; browser-automation unavailable — verified via curl + code trace)
