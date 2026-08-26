@@ -1,0 +1,62 @@
+:root {
+  /* Foundation */
+  --color-paper: #FAF8F4;
+  --color-surface: #FFFFFF;
+  --color-ink: #1A1A1A;
+  --color-navy: #1F3A5F;
+  --color-muted: #6B7280;
+  --color-sand: #EDE7DA;
+  --color-border: #D8D5CF;
+  --color-border-strong: #A8A39A;
+
+  /* Risk bands */
+  --band-critical: #7F1D1D;
+  --band-urgent: #B45309;
+  --band-investigate: #CA8A04;
+  --band-watch: #D6D3D1;
+  --band-broad-watch: #9CA3AF;
+  --band-no-alert: #E5E7EB;
+
+  /* Provenance / system */
+  --color-simulated: #2E7D8F;
+  --color-verified: #2F6B4F;
+  --color-warning: #8A5A00;
+  --color-error: #9F1D27;
+  --color-information: #315D86;
+
+  /* Type */
+  --font-ui: "Segoe UI", sans-serif;
+  --font-mono: Consolas, "SFMono-Regular", monospace;
+
+  /* Spacing (4px base) */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+
+  /* Radii */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
