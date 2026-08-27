@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MuleShield</title>
+  <title>MuleShield analyst console</title>
   <link rel="stylesheet" href="/css/tokens.css" />
   <link rel="stylesheet" href="/css/shell.css" />
   <link rel="stylesheet" href="/css/components.css" />
@@ -11,39 +11,64 @@
   <link rel="stylesheet" href="/css/case.css" />
   <link rel="stylesheet" href="/css/drawer.css" />
   <link rel="stylesheet" href="/css/extras.css" />
+  <link rel="stylesheet" href="/css/console.css" />
 </head>
 <body>
+  <a class="skip-link" href="#screen-mount">Skip to content</a>
   <div class="app-shell">
-    <div class="topbar">
+    <header class="topbar">
       <span class="topbar__wordmark">MuleShield</span>
-      <span class="topbar__badge">LOCAL DEMO</span>
+      <span class="topbar__mode-strip" id="mode-strip">LOCAL DEMO | EVALUATION HOLDOUT | SIMULATED TRANSACTION PLANE</span>
       <div class="topbar__meta">
-        <span id="topbar-model-version" class="font-mono">model: —</span>
+        <span id="topbar-model-version" class="font-mono" title="Active model version">model: —</span>
+        <span id="topbar-threshold-version" class="font-mono" title="Active threshold version">threshold: —</span>
         <span id="topbar-audit-status">audit: —</span>
-        <label title="DEMO ROLE — NOT AUTHENTICATION">
-          DEMO ROLE:
-          <select id="role-switcher">
+        <label class="topbar__role" for="role-switcher">
+          <span class="topbar__role-label">DEMO ROLE</span>
+          <select id="role-switcher" aria-describedby="role-note">
             <option value="analyst">Analyst</option>
             <option value="senior">Senior Analyst</option>
             <option value="auditor">Auditor</option>
           </select>
         </label>
+        <span id="role-note" class="visually-hidden">
+          Demo identity only. This is not authentication and grants no real permissions.
+        </span>
       </div>
-    </div>
-    <nav class="sidebar">
-      <a class="nav-item" data-screen="queue" href="#/queue">Alert Queue</a>
-      <a class="nav-item" data-screen="transactions" href="#/transactions">Transactions</a>
-      <a class="nav-item" data-screen="ring" href="#/ring">Ring Explorer</a>
-      <a class="nav-item" data-screen="governance" href="#/governance">Governance</a>
-      <a class="nav-item" data-screen="model-card" href="#/model-card">Model Card</a>
+    </header>
+
+    <nav class="sidebar" aria-label="Primary">
+      <a class="nav-item" data-screen="queue" data-icon="queue" href="#/queue">Alert Queue</a>
+      <a class="nav-item" data-screen="transactions" data-icon="transactions" href="#/transactions">Transactions</a>
+      <a class="nav-item" data-screen="ring" data-icon="graph" href="#/ring">Ring Explorer</a>
+      <a class="nav-item" data-screen="governance" data-icon="audit" href="#/governance">Governance</a>
+      <a class="nav-item" data-screen="model-card" data-icon="model" href="#/model-card">Model Card</a>
+
       <div class="sidebar__footer">
-        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>API</span><span>online</span></div>
-        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Model</span><span>loaded</span></div>
-        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Audit chain</span><span>valid</span></div>
-        <div class="system-status-row"><span><span class="system-status-row__dot system-status-row__dot--ok"></span>Data plane</span><span>simulated fixtures loaded</span></div>
+        <p class="sidebar__legend-title">Evidence provenance</p>
+        <div class="sidebar__legend">
+          <span class="badge badge--real">REAL</span>
+          <span class="badge badge--simulated">SIMULATED</span>
+          <span class="badge badge--policy">POLICY</span>
+        </div>
+        <div class="system-status" id="system-status" aria-live="polite">
+          <div class="system-status-row" data-key="api">
+            <span><span class="system-status-row__dot"></span>API</span><span data-value>checking…</span>
+          </div>
+          <div class="system-status-row" data-key="model">
+            <span><span class="system-status-row__dot"></span>Model</span><span data-value>checking…</span>
+          </div>
+          <div class="system-status-row" data-key="audit">
+            <span><span class="system-status-row__dot"></span>Audit chain</span><span data-value>checking…</span>
+          </div>
+          <div class="system-status-row" data-key="plane">
+            <span><span class="system-status-row__dot"></span>Data plane</span><span data-value>checking…</span>
+          </div>
+        </div>
       </div>
     </nav>
-    <main class="main" id="screen-mount"></main>
+
+    <main class="main" id="screen-mount" tabindex="-1"></main>
   </div>
   <script type="module" src="/js/main.js"></script>
 </body>

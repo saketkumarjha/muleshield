@@ -1,58 +1,120 @@
-import json
-from pathlib import Path
+"""Transactions, ring explorer, governance, model card, health and demo reset."""
+
+from __future__ import annotations
 
 from fastapi import APIRouter
 
-from app.api.hold import _HOLDS
+from app.api.errors import error_response
+from app.api.fixtures import GOVERNANCE, MODEL_CARD, MODEL_META, RINGS, TRANSACTIONS
+from app.services import store
 
 router = APIRouter()
 
-FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
-
-def _load(name: str):
-    with open(FIXTURE_DIR / name, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-_TRANSACTIONS = _load("transactions.json")
-_RING = _load("ring.json")
-_GOVERNANCE = _load("governance.json")
-_MODEL_CARD = _load("model_card.json")
+@router.get("/api/health")
+def health():
+    chain = store.verify_chain()
+    return {
+        **MODEL_META,
+        "runtime_mode": "local_demo",
+        "api_status": "online",
+        "model_status": "loaded",
+        "data_plane_status": "simulated fixtures loaded",
+        "audit_chain_status": chain["status"],
+        "fixture_provenance": GOVERNANCE["provenance"],
+        "note": (
+            "Local prototype health only. This is not a production readiness "
+            "signal."
+        ),
+    }
 
 
 @router.get("/api/transactions")
 def get_transactions():
-    return _TRANSACTIONS
+    return {**MODEL_META, **TRANSACTIONS}
+
+
+@router.get("/api/rings")
+def list_rings():
+    return {
+        "simulated": True,
+        "banner": RINGS["banner"],
+        "default_ring_id": RINGS["default_ring_id"],
+        "ring_ids": sorted(RINGS["rings"]),
+    }
 
 
 @router.get("/api/ring/{ring_id}")
 def get_ring(ring_id: str):
-    return _RING
+    ring = RINGS["rings"].get(ring_id)
+    if ring is None:
+        return error_response(
+            status_code=404,
+            error_code="RING_NOT_FOUND",
+            message="No simulated ring found with id %s." % ring_id,
+            retryable=False,
+            resource_id=ring_id,
+            corrective_action="Choose a ring from the ring list.",
+        )
+    return {
+        "simulated": True,
+        "banner": RINGS["banner"],
+        "default_ring_id": RINGS["default_ring_id"],
+        "ring_ids": sorted(RINGS["rings"]),
+        **ring,
+    }
 
 
 @router.get("/api/governance")
+@router.get("/api/governance/audit")
 def get_governance():
-    decided = [h for h in _HOLDS.values() if h["status"] in ("approved", "rejected")]
-    last_events = [
-        {
-            "hold_id": h["hold_id"],
-            "status": h["status"],
-            "maker": h["maker"],
-            "checker": h["checker"],
-            "audit_reference": h["audit_reference"],
-        }
-        for h in decided
-    ]
-    audit_chain = {
-        "status": "valid",
-        "entry_count": len(decided),
-        "chain_head": last_events[-1]["audit_reference"] if last_events else "genesis",
-        "last_events": last_events[-5:],
+    """Audit-chain status is recomputed from the database on every request."""
+    chain = store.verify_chain()
+    return {
+        **GOVERNANCE,
+        "audit_chain": {
+            **chain,
+            "last_events": store.recent_events(limit=5),
+            "verification": (
+                "Recomputed on this request by re-hashing every stored entry "
+                "against its predecessor. This is not a cached or constant value."
+            ),
+            "scope_note": (
+                "A local hash chain detects alteration of recorded entries. It "
+                "is not an external immutable ledger."
+            ),
+        },
     }
-    return {**_GOVERNANCE, "audit_chain": audit_chain}
 
 
+@router.get("/api/governance/model-card")
 @router.get("/api/model-card")
 def get_model_card():
-    return _MODEL_CARD
+    return MODEL_CARD
+
+
+@router.get("/api/governance/thresholds")
+def get_thresholds():
+    return {
+        **MODEL_META,
+        "threshold_registry": GOVERNANCE["threshold_registry"],
+        "note": GOVERNANCE["threshold_registry_note"],
+    }
+
+
+@router.get("/api/governance/coverage")
+def get_coverage():
+    return {
+        "problem_statement_coverage": GOVERNANCE["problem_statement_coverage"],
+        "note": GOVERNANCE["coverage_note"],
+    }
+
+
+@router.post("/api/demo/reset")
+def reset_demo():
+    """Explicit rehearsal reset. Never runs automatically at startup."""
+    store.reset_db()
+    return {
+        "status": "reset",
+        "note": "Holds and audit entries cleared. Fixtures are unchanged.",
+    }
