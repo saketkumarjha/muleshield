@@ -1,28 +1,334 @@
 {
-  "ring_id": "RING-4471",
-  "time_window": "2026-08-24T06:00:00Z to 2026-08-24T09:20:00Z",
-  "why_flagged": [
-    "Fan-in: 14 accounts sent funds into ACC09062 within 6 hours",
-    "Pass-through: ACC04471 held inbound funds for under 40 minutes before forwarding",
-    "Shared beneficiary: ACC22110 receives from 3 other critical-band accounts",
-    "Time-to-drain: 92% of inbound balance withdrawn within 40 minutes at ACC04471"
-  ],
-  "nodes": [
-    { "id": "ACC09062", "type": "account", "band": "critical", "label": "ACC09062" },
-    { "id": "ACC04471", "type": "account", "band": "critical", "label": "ACC04471" },
-    { "id": "ACC22110", "type": "beneficiary", "band": "critical", "label": "ACC22110" },
-    { "id": "ACC55021", "type": "account", "band": "watch", "label": "ACC55021" },
-    { "id": "EXT-CASHOUT-01", "type": "cashout", "band": null, "label": "External cash-out" },
-    { "id": "ACC33210", "type": "source", "band": "watch", "label": "ACC33210" },
-    { "id": "SRC-A", "type": "source", "band": null, "label": "Fan-in source A" },
-    { "id": "SRC-B", "type": "source", "band": null, "label": "Fan-in source B" }
-  ],
-  "edges": [
-    { "from": "SRC-A", "to": "ACC09062", "amount": 45000, "channel": "UPI", "timestamp": "2026-08-24T06:05:00Z" },
-    { "from": "SRC-B", "to": "ACC09062", "amount": 51000, "channel": "UPI", "timestamp": "2026-08-24T06:12:00Z" },
-    { "from": "ACC33210", "to": "ACC09062", "amount": 320000, "channel": "RTGS", "timestamp": "2026-08-24T07:40:00Z" },
-    { "from": "ACC09062", "to": "ACC22110", "amount": 210000, "channel": "IMPS", "timestamp": "2026-08-24T09:12:00Z" },
-    { "from": "ACC04471", "to": "ACC55021", "amount": 150000, "channel": "NEFT", "timestamp": "2026-08-24T06:41:10Z" },
-    { "from": "ACC55021", "to": "EXT-CASHOUT-01", "amount": 142000, "channel": "UPI", "timestamp": "2026-08-24T06:44:02Z" }
-  ]
+  "simulated": true,
+  "banner": "SIMULATED - integration-ready schema, not live bank data. The supplied dataset contains no transaction edges, counterparties or timestamps.",
+  "default_ring_id": "RING-4400",
+  "rings": {
+    "RING-4400": {
+      "ring_id": "RING-4400",
+      "simulated": true,
+      "banner": "SIMULATED - integration-ready schema, not live bank data. The supplied dataset contains no transaction edges, counterparties or timestamps.",
+      "time_window": "2026-08-24T06:00:00Z to 2026-08-24T09:40:00Z",
+      "node_cap": 60,
+      "why_flagged": [
+        "Fan-in: 5 generated sources credit the first account inside the window.",
+        "Pass-through: each hop forwards most of its inbound balance within the window.",
+        "Shared beneficiary: the chain converges on one generated beneficiary node.",
+        "Time-to-drain: the terminal hop moves funds to a generated external cash-out node."
+      ],
+      "why_flagged_caveat": "These pattern descriptions are properties of the generated plane, not observations about real customer behaviour.",
+      "nodes": [
+        {
+          "id": "ACC09079",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09079",
+          "risk_rank": 1
+        },
+        {
+          "id": "ACC09062",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09062",
+          "risk_rank": 2
+        },
+        {
+          "id": "ACC09073",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09073",
+          "risk_rank": 3
+        },
+        {
+          "id": "BEN-0-01",
+          "type": "beneficiary",
+          "band": null,
+          "label": "Beneficiary 0-01",
+          "risk_rank": null
+        },
+        {
+          "id": "EXT-CASHOUT-0",
+          "type": "cashout",
+          "band": null,
+          "label": "External cash-out",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-0-0",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 0",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-0-1",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 1",
+          "risk_rank": null
+        }
+      ],
+      "edges": [
+        {
+          "from": "SRC-0-0",
+          "to": "ACC09079",
+          "amount": 50000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T06:10:00Z"
+        },
+        {
+          "from": "SRC-0-1",
+          "to": "ACC09079",
+          "amount": 70000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T07:17:00Z"
+        },
+        {
+          "from": "ACC09079",
+          "to": "ACC09062",
+          "amount": 143000,
+          "channel": "RTGS",
+          "timestamp": "2026-08-24T07:20:00Z"
+        },
+        {
+          "from": "ACC09062",
+          "to": "ACC09073",
+          "amount": 94000,
+          "channel": "RTGS",
+          "timestamp": "2026-08-24T08:29:00Z"
+        },
+        {
+          "from": "ACC09073",
+          "to": "BEN-0-01",
+          "amount": 197000,
+          "channel": "RTGS",
+          "timestamp": "2026-08-24T09:38:00Z"
+        },
+        {
+          "from": "BEN-0-01",
+          "to": "EXT-CASHOUT-0",
+          "amount": 110000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T09:40:00Z"
+        }
+      ]
+    },
+    "RING-4417": {
+      "ring_id": "RING-4417",
+      "simulated": true,
+      "banner": "SIMULATED - integration-ready schema, not live bank data. The supplied dataset contains no transaction edges, counterparties or timestamps.",
+      "time_window": "2026-08-24T06:00:00Z to 2026-08-24T09:40:00Z",
+      "node_cap": 60,
+      "why_flagged": [
+        "Fan-in: 5 generated sources credit the first account inside the window.",
+        "Pass-through: each hop forwards most of its inbound balance within the window.",
+        "Shared beneficiary: the chain converges on one generated beneficiary node.",
+        "Time-to-drain: the terminal hop moves funds to a generated external cash-out node."
+      ],
+      "why_flagged_caveat": "These pattern descriptions are properties of the generated plane, not observations about real customer behaviour.",
+      "nodes": [
+        {
+          "id": "ACC09042",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09042",
+          "risk_rank": 1
+        },
+        {
+          "id": "ACC09016",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09016",
+          "risk_rank": 2
+        },
+        {
+          "id": "ACC09054",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09054",
+          "risk_rank": 3
+        },
+        {
+          "id": "BEN-1-01",
+          "type": "beneficiary",
+          "band": null,
+          "label": "Beneficiary 1-01",
+          "risk_rank": null
+        },
+        {
+          "id": "EXT-CASHOUT-1",
+          "type": "cashout",
+          "band": null,
+          "label": "External cash-out",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-1-0",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 0",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-1-1",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 1",
+          "risk_rank": null
+        }
+      ],
+      "edges": [
+        {
+          "from": "SRC-1-0",
+          "to": "ACC09042",
+          "amount": 75000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T06:10:00Z"
+        },
+        {
+          "from": "SRC-1-1",
+          "to": "ACC09042",
+          "amount": 84000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T07:17:00Z"
+        },
+        {
+          "from": "ACC09042",
+          "to": "ACC09016",
+          "amount": 161000,
+          "channel": "NEFT",
+          "timestamp": "2026-08-24T07:20:00Z"
+        },
+        {
+          "from": "ACC09016",
+          "to": "ACC09054",
+          "amount": 292000,
+          "channel": "NEFT",
+          "timestamp": "2026-08-24T08:29:00Z"
+        },
+        {
+          "from": "ACC09054",
+          "to": "BEN-1-01",
+          "amount": 260000,
+          "channel": "IMPS",
+          "timestamp": "2026-08-24T09:38:00Z"
+        },
+        {
+          "from": "BEN-1-01",
+          "to": "EXT-CASHOUT-1",
+          "amount": 153000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T09:40:00Z"
+        }
+      ]
+    },
+    "RING-4434": {
+      "ring_id": "RING-4434",
+      "simulated": true,
+      "banner": "SIMULATED - integration-ready schema, not live bank data. The supplied dataset contains no transaction edges, counterparties or timestamps.",
+      "time_window": "2026-08-24T06:00:00Z to 2026-08-24T09:40:00Z",
+      "node_cap": 60,
+      "why_flagged": [
+        "Fan-in: 5 generated sources credit the first account inside the window.",
+        "Pass-through: each hop forwards most of its inbound balance within the window.",
+        "Shared beneficiary: the chain converges on one generated beneficiary node.",
+        "Time-to-drain: the terminal hop moves funds to a generated external cash-out node."
+      ],
+      "why_flagged_caveat": "These pattern descriptions are properties of the generated plane, not observations about real customer behaviour.",
+      "nodes": [
+        {
+          "id": "ACC09018",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09018",
+          "risk_rank": 1
+        },
+        {
+          "id": "ACC09008",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09008",
+          "risk_rank": 2
+        },
+        {
+          "id": "ACC09031",
+          "type": "account",
+          "band": "critical",
+          "label": "ACC09031",
+          "risk_rank": 3
+        },
+        {
+          "id": "BEN-2-01",
+          "type": "beneficiary",
+          "band": null,
+          "label": "Beneficiary 2-01",
+          "risk_rank": null
+        },
+        {
+          "id": "EXT-CASHOUT-2",
+          "type": "cashout",
+          "band": null,
+          "label": "External cash-out",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-2-0",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 0",
+          "risk_rank": null
+        },
+        {
+          "id": "SRC-2-1",
+          "type": "source",
+          "band": null,
+          "label": "Fan-in source 1",
+          "risk_rank": null
+        }
+      ],
+      "edges": [
+        {
+          "from": "SRC-2-0",
+          "to": "ACC09018",
+          "amount": 66000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T06:10:00Z"
+        },
+        {
+          "from": "SRC-2-1",
+          "to": "ACC09018",
+          "amount": 72000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T07:17:00Z"
+        },
+        {
+          "from": "ACC09018",
+          "to": "ACC09008",
+          "amount": 235000,
+          "channel": "NEFT",
+          "timestamp": "2026-08-24T07:20:00Z"
+        },
+        {
+          "from": "ACC09008",
+          "to": "ACC09031",
+          "amount": 222000,
+          "channel": "RTGS",
+          "timestamp": "2026-08-24T08:29:00Z"
+        },
+        {
+          "from": "ACC09031",
+          "to": "BEN-2-01",
+          "amount": 173000,
+          "channel": "IMPS",
+          "timestamp": "2026-08-24T09:38:00Z"
+        },
+        {
+          "from": "BEN-2-01",
+          "to": "EXT-CASHOUT-2",
+          "amount": 116000,
+          "channel": "UPI",
+          "timestamp": "2026-08-24T09:40:00Z"
+        }
+      ]
+    }
+  }
 }

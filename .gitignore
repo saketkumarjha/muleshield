@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Runtime demo database. Created on first start; reset with POST /api/demo/reset.
+data/console.db
+.pytest_cache/

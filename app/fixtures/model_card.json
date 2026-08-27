@@ -1,43 +1,154 @@
 {
   "identity": {
-    "name": "MuleShield Mule-Account Risk Model",
-    "version": "muleshield-gbm-v1.3.0",
-    "threshold_version": "thr-2026-08-01",
-    "family": "Gradient-boosted ensemble (3-model soft-vote)"
+    "name": "MuleShield mule-account risk model",
+    "version": "muleshield_cat25_preplgb75_fixed_oof_ecdf_20260825",
+    "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+    "family": "Fixed-reference rank blend: 25% CatBoost + 75% AutoGluon prepared-LightGBM",
+    "activation_status": "ACTIVE"
   },
+  "score_semantics": {
+    "value": "fixed-reference relative-risk percentile; not calibrated probability",
+    "explanation": "Each base model's raw score is mapped through its frozen 7,265-row train-OOF empirical CDF, then blended 25/75. The result is a relative-risk percentile against the training reference. It is NOT a calibrated probability, a confidence, a likelihood, or a probability of customer guilt.",
+    "batch_invariant": true,
+    "formula": "0.25*ECDF_catboost_train_oof(cat) + 0.75*ECDF_prepared_lightgbm_train_oof(lgb)"
+  },
+  "limitations": [
+    "The frozen holdout contains only 16 positives. The 64% Critical precision and 100% Critical recall are one-shot small-sample results on that single holdout, not production rates.",
+    "The holdout is spent. It cannot justify any further model or threshold change.",
+    "Cross-validation seed changes move precision by up to 22.3 percentage points.",
+    "There is no external validation set and no defensible temporal validation. The month field is a complete class-period confound and is excluded, so no temporal-generalisation claim is valid.",
+    "Explanations are partial: CatBoost TreeSHAP covers the 25% CatBoost component only. There is no full-ensemble or causal explanation.",
+    "Feature meanings are incomplete pending the BOI data dictionary. Contributions are model behaviour, not business conclusions.",
+    "Graph, ring, feed and transaction surfaces are simulated and carry no detection-performance evidence.",
+    "No demographic-parity or protected-attribute fairness analysis has been run for this model version.",
+    "The model has not been evaluated against adversarial or intentionally evasive behaviour.",
+    "Maker and checker identities are demo-supplied and unverified. SSO, authentication and RBAC are not integrated."
+  ],
   "training_holdout_split": {
-    "method": "Time-based split — train on activity before 2026-06-01, holdout after",
-    "train_accounts": 42318,
+    "method": "Stratified random partition of one anonymised 9,082-account table. NOT a time-based split - the month field is a complete class-period confound and is excluded.",
+    "total_accounts": 9082,
+    "total_columns": 3925,
+    "confirmed_mules": 81,
+    "positive_rate": 0.00892,
+    "train_accounts": 7265,
+    "train_mules": 65,
     "holdout_accounts": 1817,
-    "labelled_mules_holdout": 20
+    "holdout_mules": 16,
+    "holdout_status": "spent_after_frozen_one_shot"
   },
-  "feature_regime": [
-    "Transaction velocity and burst statistics",
-    "Dormancy-to-activity reactivation patterns",
-    "Time-to-drain (balance withdrawal speed after inbound credit)",
-    "Structuring indicators (near-threshold repeated transfers)"
-  ],
-  "evaluation_protocol": "Holdout accounts scored once at threshold_version thr-2026-08-01; no threshold re-tuning on holdout.",
-  "operating_points": [
-    { "band": "critical", "raw_threshold": 0.90, "holdout_precision": 0.80, "holdout_alerts": 20 },
-    { "band": "urgent", "raw_threshold": 0.65, "holdout_precision": 0.58, "holdout_alerts": 41 },
-    { "band": "investigate", "raw_threshold": 0.40, "holdout_precision": 0.35, "holdout_alerts": 96 }
-  ],
-  "seed_sensitivity": "Re-trained across 5 random seeds; Critical-band holdout precision varied 0.76-0.83.",
-  "calibration": "Isotonic calibration applied to raw ensemble score to produce the display score shown in the queue and case screens.",
+  "feature_regime": {
+    "n_features": 300,
+    "selected_from": 3925,
+    "imputation": "train_split_median",
+    "note": "Inputs are anonymised F-columns from the supplied table. Their business meaning is not established. The console deliberately does not translate them into fraud narratives.",
+    "excluded": [
+      "F2230 - period artifact, not available at decision time",
+      "F3912 - near-target proxy, not available at decision time",
+      "Month field - complete class-period confound",
+      "Post-resolution fields recorded after a case was opened"
+    ]
+  },
+  "evaluation_protocol": "Model and thresholds were frozen first. The 1,817-row holdout was then scored exactly once. No threshold was tuned on the holdout. Threshold selection used train-only repeated stratified 5-fold cross-validation (5 repeats, seed 42).",
+  "operating_points": {
+    "semantics": "cumulative - each row counts every alert at or above that band",
+    "scope": "frozen aggregate over the 1,817-row holdout; not attributable to individual accounts",
+    "rows": [
+      {
+        "band": "critical",
+        "raw_threshold": 0.981942532690984,
+        "true_positives": 16,
+        "false_positives": 9,
+        "false_negatives": 0,
+        "alerts": 25,
+        "precision": 0.64,
+        "recall": 1.0
+      },
+      {
+        "band": "urgent",
+        "raw_threshold": 0.961682725395733,
+        "true_positives": 16,
+        "false_positives": 22,
+        "false_negatives": 0,
+        "alerts": 38,
+        "precision": 0.4211,
+        "recall": 1.0
+      },
+      {
+        "band": "investigate",
+        "raw_threshold": 0.94462319339298,
+        "true_positives": 16,
+        "false_positives": 45,
+        "false_negatives": 0,
+        "alerts": 61,
+        "precision": 0.2623,
+        "recall": 1.0
+      },
+      {
+        "band": "watch",
+        "raw_threshold": 0.862061252580867,
+        "true_positives": 16,
+        "false_positives": 160,
+        "false_negatives": 0,
+        "alerts": 176,
+        "precision": 0.0909,
+        "recall": 1.0
+      },
+      {
+        "band": "broad_watch",
+        "raw_threshold": 0.806684445973847,
+        "true_positives": 16,
+        "false_positives": 233,
+        "false_negatives": 0,
+        "alerts": 249,
+        "precision": 0.0643,
+        "recall": 1.0
+      }
+    ],
+    "exclusive_band_counts": {
+      "critical": 25,
+      "urgent": 13,
+      "investigate": 23,
+      "watch": 115,
+      "broad_watch": 73,
+      "no_alert": 1568
+    }
+  },
+  "seed_sensitivity": "Cross-validation seed changes move precision by up to 22.3 percentage points. No best-seed result is reported as the headline. Threshold selection is fixed at seed 42 and frozen.",
+  "calibration": "No probability calibration is applied. The score is a fixed-reference relative-risk percentile against the train-OOF empirical CDF. It must not be displayed or described as a calibrated probability, a confidence or a likelihood.",
   "leakage_exclusions": [
-    "Post-decision account-status fields (closure, freeze flags) excluded from training features.",
-    "Any field populated only after a fraud case was opened on the account was excluded."
+    "F2230 - period artifact excluded as unavailable at decision time.",
+    "F3912 - near-target proxy excluded as unavailable at decision time.",
+    "Month field - complete class-period confound; every negative is October 2025 and no positive is.",
+    "Post-resolution fields populated only after a fraud case was opened.",
+    "Alert-time fields excluded from the pre-alert decision-time model."
   ],
   "rejected_experiments": [
-    "Device-fingerprint features rejected — supplied dataset had insufficient device coverage to validate signal.",
-    "Cross-account graph embeddings rejected for this version — training data does not contain real transaction edges."
+    "Non-negative logistic stacker - rejected after worse average precision, AUC and false-positive count.",
+    "Hard-negative cascade - rejected after large repeat-consistent degradation.",
+    "Historical five-model paper ensemble reconstruction - deliberately deferred; not part of this pack.",
+    "Cross-account graph embeddings - not trainable; the supplied table contains no real transaction edges."
   ],
-  "limitations": [
-    "Holdout precision at Critical (80.0%) is based on only 20 alerts — a small-sample estimate, not a stable long-run rate.",
-    "Graph and feed evidence shown in the product are simulated; the model itself was not trained on graph features.",
-    "No fairness/demographic-parity analysis has been run against protected attributes.",
-    "Model has not been evaluated against adversarial or intentionally evasive account behavior."
-  ],
-  "deployment_design": "Local demo only. Model artifact and thresholds are loaded from a fixed local file at startup; no live retraining or feedback loop is implemented in this build."
+  "train_oof_diagnostics": {
+    "average_precision": 0.8955142349464457,
+    "roc_auc": 0.9933632478632478,
+    "note": "Train-only out-of-fold diagnostics. Not holdout evidence."
+  },
+  "measured_latency": {
+    "single_row_ms": 4581.062,
+    "batch_1000_ms": 5545.746,
+    "all_9082_ms": 15063.3,
+    "shap_ms_for_banded": 220.0,
+    "note": "Scoring-only measurement on the development machine, excluding feature-matrix construction. This is not an SLA and not an end-to-end request latency."
+  },
+  "deployment_design": "Local prototype only. The frozen pack and threshold registry are loaded from disk at startup. There is no retraining, no feedback loop, no authentication and no core-banking integration. Rollback to the previous CatBoost-only model is an explicit environment switch and is visible in the health endpoint.",
+  "provenance": {
+    "generated_by": "scripts/build_fixtures.py",
+    "sources": {
+      "outputs/api_seed_single_row_ecdf_20260825/seed_summary.json": "d67602d9662fdebae92560932e360550332fba5edde38b730b23409a35c00919",
+      "outputs/api_seed_single_row_ecdf_20260825/accounts_holdout.json": "d1cc022952c724c569110d03410badd1391ce4ee27377d3b9aaad2a5453b4a59",
+      "outputs/api_seed_single_row_ecdf_20260825/alert_detail.json": "1ea7fe614359778bda89296824d1ebca33454d180befe126f6da0046b99a2735",
+      "outputs/ps2_champion_pack_single_row_ecdf_20260825/threshold_registry.csv": "87443f47fa1a15989ba433835ee622b9b7aca369771c78836ad24001ae3bc58a",
+      "MODEL_ACTIVATION_REGISTRY_20260825.json": "c4e67b384a7f23ebb1ece4679b7b591829872766e90d22676f2a6b9d4df0d7ba"
+    }
+  }
 }

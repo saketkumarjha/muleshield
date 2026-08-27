@@ -1,41 +1,234 @@
 {
   "runtime_status": {
-    "model_version": "muleshield-gbm-v1.3.0",
-    "threshold_version": "thr-2026-08-01",
+    "model_version": "muleshield_cat25_preplgb75_fixed_oof_ecdf_20260825",
+    "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+    "score_semantics": "fixed-reference relative-risk percentile; not calibrated probability",
+    "activation_status": "ACTIVE",
+    "activated_at_date": "2026-08-25",
+    "rollback_switch": "MULESHIELD_MODEL_MODE=rollback_catboost",
     "api_status": "online",
-    "audit_chain_status": "valid",
     "data_plane_status": "simulated fixtures loaded"
   },
+  "identity_disclaimer": "DEMO IDENTITY - NOT AUTHENTICATION. Maker and checker names are demo-supplied and unverified. SSO, authentication and RBAC are not integrated. No core-banking action is executed by this system.",
   "evidence_status_map": [
-    { "capability": "Transaction velocity / structuring model signals", "status": "validated_real", "note": "Validated on supplied real transaction data." },
-    { "capability": "Graph ring / cash-out pattern detection", "status": "implemented_simulated", "note": "Implemented on simulated data. Supplied dataset contains no real edges." },
-    { "capability": "High-value first-time counterparty rule", "status": "policy", "note": "Policy/integration contract, not model-derived." },
-    { "capability": "Live core-banking hold execution", "status": "unavailable", "note": "Not implemented — this build only records a proposed hold; no core system integration exists." }
+    {
+      "capability": "Account-level mule risk classification",
+      "status": "validated_real",
+      "note": "Trained and evaluated on the supplied real 9,082-account table."
+    },
+    {
+      "capability": "Feature engineering and leakage audit",
+      "status": "validated_real",
+      "note": "300 selected inputs; F2230 and F3912 excluded as unavailable at decision time."
+    },
+    {
+      "capability": "Risk scoring, banding and alerting",
+      "status": "validated_real",
+      "note": "Frozen out-of-fold threshold registry applied to real account scores."
+    },
+    {
+      "capability": "Partial model explanation",
+      "status": "validated_real",
+      "note": "CatBoost TreeSHAP covers the 25% CatBoost component only, not the full blend."
+    },
+    {
+      "capability": "Suspicious-transaction detection",
+      "status": "implemented_simulated",
+      "note": "Generated transaction plane. The supplied table has no transaction rows."
+    },
+    {
+      "capability": "Graph ring / cash-out pattern detection",
+      "status": "implemented_simulated",
+      "note": "Generated graph. The supplied table has no edges, counterparties or timestamps."
+    },
+    {
+      "capability": "FMS and TMS alert ingestion",
+      "status": "implemented_simulated",
+      "note": "Schema-shaped adapter demonstrated on generated fixtures. No live feed."
+    },
+    {
+      "capability": "Government cyber-fraud alerts (NCRP / 1930)",
+      "status": "implemented_simulated",
+      "note": "Ticket-shaped fixtures only. No I4C or NCRP connectivity exists."
+    },
+    {
+      "capability": "Real-time regulatory feeds",
+      "status": "policy",
+      "note": "Integration contract defined. Only a lightweight local replay demo runs."
+    },
+    {
+      "capability": "Cross-channel bank data",
+      "status": "policy",
+      "note": "Channel field modelled in the simulated plane; no cross-channel source is connected."
+    },
+    {
+      "capability": "Prevention of circulation of fraudulent proceeds",
+      "status": "policy",
+      "note": "Hold recommendation and maker-checker workflow only. The bank core system executes any action."
+    },
+    {
+      "capability": "Live core-banking hold execution",
+      "status": "unavailable",
+      "note": "Not implemented. This build records a proposed and approved recommendation; nothing is executed."
+    }
   ],
   "threshold_registry": [
-    { "band": "critical", "raw_threshold": 0.90, "training_fpr_budget": 0.02, "training_recall": 0.71, "training_precision": 0.83, "holdout_alerts": 20, "holdout_precision": 0.80, "threshold_version": "thr-2026-08-01", "recommended_action": "senior review" },
-    { "band": "urgent", "raw_threshold": 0.65, "training_fpr_budget": 0.05, "training_recall": 0.64, "training_precision": 0.61, "holdout_alerts": 41, "holdout_precision": 0.58, "threshold_version": "thr-2026-08-01", "recommended_action": "analyst review" },
-    { "band": "investigate", "raw_threshold": 0.40, "training_fpr_budget": 0.10, "training_recall": 0.55, "training_precision": 0.39, "holdout_alerts": 96, "holdout_precision": 0.35, "threshold_version": "thr-2026-08-01", "recommended_action": "queue for triage" }
+    {
+      "band": "critical",
+      "raw_threshold": 0.981942532690984,
+      "definition": "optimizer_best_at_fpr",
+      "train_oof_fpr_budget": 0.005,
+      "train_oof_recall": 0.8769230769,
+      "train_oof_precision": 0.6705882353,
+      "train_oof_tp": 57,
+      "train_oof_fp": 28,
+      "train_oof_fn": 8,
+      "holdout_alerts_cumulative": 25,
+      "holdout_precision_cumulative": 0.64,
+      "holdout_alerts_exclusive": 25,
+      "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+      "recommended_action": "senior-analyst review; maker-checker approval before any restriction"
+    },
+    {
+      "band": "urgent",
+      "raw_threshold": 0.961682725395733,
+      "definition": "optimizer_best_at_fpr",
+      "train_oof_fpr_budget": 0.01,
+      "train_oof_recall": 0.9230769231,
+      "train_oof_precision": 0.5172413793,
+      "train_oof_tp": 60,
+      "train_oof_fp": 56,
+      "train_oof_fn": 5,
+      "holdout_alerts_cumulative": 38,
+      "holdout_precision_cumulative": 0.4211,
+      "holdout_alerts_exclusive": 13,
+      "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+      "recommended_action": "analyst review within the working day"
+    },
+    {
+      "band": "investigate",
+      "raw_threshold": 0.94462319339298,
+      "definition": "optimizer_best_at_fpr",
+      "train_oof_fpr_budget": 0.02,
+      "train_oof_recall": 0.9384615385,
+      "train_oof_precision": 0.4149659864,
+      "train_oof_tp": 61,
+      "train_oof_fp": 86,
+      "train_oof_fn": 4,
+      "holdout_alerts_cumulative": 61,
+      "holdout_precision_cumulative": 0.2623,
+      "holdout_alerts_exclusive": 23,
+      "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+      "recommended_action": "queue for triage"
+    },
+    {
+      "band": "watch",
+      "raw_threshold": 0.862061252580867,
+      "definition": "exact_negative_oof_quantile",
+      "train_oof_fpr_budget": 0.05,
+      "train_oof_recall": 0.9384615385,
+      "train_oof_precision": 0.1448931116,
+      "train_oof_tp": 61,
+      "train_oof_fp": 360,
+      "train_oof_fn": 4,
+      "holdout_alerts_cumulative": 176,
+      "holdout_precision_cumulative": 0.0909,
+      "holdout_alerts_exclusive": 115,
+      "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+      "recommended_action": "monitor; no individual action"
+    },
+    {
+      "band": "broad_watch",
+      "raw_threshold": 0.806684445973847,
+      "definition": "exact_negative_oof_quantile",
+      "train_oof_fpr_budget": 0.1,
+      "train_oof_recall": 0.9692307692,
+      "train_oof_precision": 0.0804597701,
+      "train_oof_tp": 63,
+      "train_oof_fp": 720,
+      "train_oof_fn": 2,
+      "holdout_alerts_cumulative": 249,
+      "holdout_precision_cumulative": 0.0643,
+      "holdout_alerts_exclusive": 73,
+      "threshold_version": "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825",
+      "recommended_action": "monitor in aggregate only"
+    }
   ],
+  "threshold_registry_note": "Threshold metrics are train-only out-of-fold estimates from repeated stratified 5-fold cross-validation (5 repeats, seed 42). Holdout columns are a one-shot frozen evaluation and were not used to set any threshold. Cumulative and exclusive counts are shown separately and must not be conflated.",
   "leakage_warnings": [
-    "Post-decision fields (e.g., account-closure flags recorded after a fraud case opened) are excluded from training features — see Model Card leakage exclusions.",
-    "Time-based holdout split used to avoid future-to-past leakage; no random shuffle across time was applied."
+    "The month field is a complete class-period confound: every negative belongs to October 2025 and no positive does. It is excluded, and no temporal-generalisation claim is valid from this dataset.",
+    "F2230 (period artifact) and F3912 (near-target proxy) are excluded as bank-unsafe: neither exists at decision time.",
+    "Post-resolution fields recorded after a fraud case was opened are excluded from the decision-time feature set.",
+    "There is no defensible temporal validation set. The train/holdout split is a stratified random partition of one anonymised table, not a time-based split."
   ],
   "fairness_uncertainty": [
-    "Holdout precision at Critical (80.0%) is reported with n=20 true/false positives — small-sample interval, not a stable long-run estimate.",
-    "No demographic parity analysis has been run against protected attributes; this is a stated limitation, not a validated fairness claim."
+    "The frozen holdout contains only 16 positives. One changed prediction moves holdout recall by 6.25 percentage points.",
+    "Critical-band holdout precision of 64% is a small-sample point result from 16 true positives and 9 false positives. It is not a stable long-run rate.",
+    "Cross-validation seed changes move precision by up to 22.3 percentage points. No single best-seed result is reported as the headline.",
+    "No demographic-parity or protected-attribute fairness analysis has been run for the active model version. This is a stated limitation, not a fairness certification.",
+    "Graph, ring, feed and transaction surfaces are simulated and carry no detection-performance evidence of any kind."
   ],
-  "audit_chain": {
-    "status": "valid",
-    "entry_count": 0,
-    "chain_head": "genesis",
-    "last_events": []
-  },
   "problem_statement_coverage": [
-    { "requirement": "Rank accounts by mule risk", "status": "done" },
-    { "requirement": "Explain evidence behind each flag", "status": "done" },
-    { "requirement": "Human-in-the-loop hold approval (maker-checker)", "status": "done" },
-    { "requirement": "Graph-based ring detection", "status": "simulated" },
-    { "requirement": "Live core-banking integration", "status": "not_implemented" }
-  ]
+    {
+      "requirement": "AI/ML classification of mule accounts",
+      "status": "validated_real",
+      "note": "CatBoost/LightGBM rank blend trained and evaluated on the supplied table."
+    },
+    {
+      "requirement": "Feature engineering",
+      "status": "validated_real",
+      "note": "300 decision-time-safe inputs selected from 3,925 columns."
+    },
+    {
+      "requirement": "Risk scoring and alerting",
+      "status": "validated_real",
+      "note": "Frozen five-band out-of-fold threshold registry."
+    },
+    {
+      "requirement": "Suspicious-transaction detection",
+      "status": "implemented_simulated",
+      "note": "Policy and graph composition over a generated plane; no trained transaction classifier."
+    },
+    {
+      "requirement": "Financial-transaction ingestion",
+      "status": "implemented_simulated",
+      "note": "Ingestion path demonstrated against generated transactions."
+    },
+    {
+      "requirement": "FMS and TMS alert ingestion",
+      "status": "implemented_simulated",
+      "note": "Schema-shaped adapters on generated alert fixtures."
+    },
+    {
+      "requirement": "Government cyber-fraud alerts or tickets",
+      "status": "implemented_simulated",
+      "note": "NCRP/1930-shaped ticket fixtures only."
+    },
+    {
+      "requirement": "Real-time regulatory inputs or feeds",
+      "status": "policy",
+      "note": "Integration contract plus a local replay demonstration. No live feed is consumed."
+    },
+    {
+      "requirement": "Cross-channel bank data",
+      "status": "policy",
+      "note": "Contract only. No cross-channel source is connected."
+    },
+    {
+      "requirement": "Prevention of circulation of fraudulent proceeds",
+      "status": "policy",
+      "note": "Hold recommendation, interception window and maker-checker approval. The bank core system executes any action."
+    }
+  ],
+  "coverage_note": "Ten official clauses, four statuses. Only the account-model clauses are validated on supplied real data. This is deliberately not a single aggregate completeness score.",
+  "provenance": {
+    "generated_by": "scripts/build_fixtures.py",
+    "sources": {
+      "outputs/api_seed_single_row_ecdf_20260825/seed_summary.json": "d67602d9662fdebae92560932e360550332fba5edde38b730b23409a35c00919",
+      "outputs/api_seed_single_row_ecdf_20260825/accounts_holdout.json": "d1cc022952c724c569110d03410badd1391ce4ee27377d3b9aaad2a5453b4a59",
+      "outputs/api_seed_single_row_ecdf_20260825/alert_detail.json": "1ea7fe614359778bda89296824d1ebca33454d180befe126f6da0046b99a2735",
+      "outputs/ps2_champion_pack_single_row_ecdf_20260825/threshold_registry.csv": "87443f47fa1a15989ba433835ee622b9b7aca369771c78836ad24001ae3bc58a",
+      "MODEL_ACTIVATION_REGISTRY_20260825.json": "c4e67b384a7f23ebb1ece4679b7b591829872766e90d22676f2a6b9d4df0d7ba"
+    }
+  }
 }
