@@ -7,8 +7,9 @@ Two invariants this module exists to guarantee:
 2. The audit chain is genuinely verified. `verify_chain` recomputes every entry
    hash from the stored payload and the previous hash. It is never a constant.
 
-Decisions survive a page refresh and a process restart because they live in the
-database, not in a module-level dict.
+In the local rehearsal, decisions survive a page refresh and process restart
+because they live in the database, not in a module-level dict. Hosted Vercel
+state is explicitly temporary because its writable filesystem is per-instance.
 """
 
 from __future__ import annotations
@@ -17,17 +18,40 @@ import hashlib
 import json
 import os
 import sqlite3
+import tempfile
 import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-DB_PATH = Path(
-    os.environ.get(
-        "MULESHIELD_CONSOLE_DB",
-        Path(__file__).resolve().parent.parent.parent / "data" / "console.db",
-    )
-)
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+_configured_db_path = os.environ.get("MULESHIELD_CONSOLE_DB")
+
+# A Vercel Function's deployed source tree is read-only. Its only writable
+# filesystem is the per-instance temporary directory. Local runs retain the
+# durable repository-local SQLite database used by the rehearsal workflow.
+if _configured_db_path:
+    DB_PATH = Path(_configured_db_path)
+elif IS_VERCEL:
+    DB_PATH = Path(tempfile.gettempdir()) / "muleshield-console.db"
+else:
+    DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "console.db"
+
+PERSISTENCE = {
+    "backend": "sqlite",
+    "scope": "function_instance" if IS_VERCEL else "local_host",
+    "durable": not IS_VERCEL,
+    "shared_across_instances": not IS_VERCEL,
+    "disclaimer": (
+        "Vercel demo state is temporary and isolated to one function instance; "
+        "it can disappear after a cold start or be absent on another instance. "
+        "Use the local console or an external transactional database for a "
+        "durable maker-checker demonstration."
+        if IS_VERCEL else
+        "Local SQLite state survives page refreshes and process restarts on "
+        "this host. It is not a production or multi-node database."
+    ),
+}
 
 GENESIS = "0" * 64
 

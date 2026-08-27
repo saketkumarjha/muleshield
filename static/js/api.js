@@ -12,13 +12,20 @@ async function handle(response) {
   if (response.ok) {
     return response.json();
   }
-  const body = await response.json().catch(() => ({
-    error_code: "UNKNOWN_ERROR",
-    message: `Request failed with status ${response.status}`,
-    retryable: false,
-    resource_id: null,
-    corrective_action: null,
-  }));
+  const body = await response.json().catch(() => {
+    const backendFailure = response.status >= 500;
+    return {
+      error_code: backendFailure ? "BACKEND_UNAVAILABLE" : "HTTP_ERROR",
+      message: backendFailure
+        ? `The MuleShield backend is unavailable (HTTP ${response.status}). No cached scores are shown.`
+        : `The request was rejected with HTTP ${response.status}.`,
+      retryable: backendFailure,
+      resource_id: null,
+      corrective_action: backendFailure
+        ? "Retry once. If the error remains, check the hosted function logs."
+        : null,
+    };
+  });
   throw new ApiError(body);
 }
 

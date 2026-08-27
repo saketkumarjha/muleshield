@@ -16,14 +16,15 @@ def health():
     chain = store.verify_chain()
     return {
         **MODEL_META,
-        "runtime_mode": "local_demo",
+        "runtime_mode": "vercel_demo" if store.IS_VERCEL else "local_demo",
         "api_status": "online",
         "model_status": "loaded",
         "data_plane_status": "simulated fixtures loaded",
         "audit_chain_status": chain["status"],
+        "persistence": store.PERSISTENCE,
         "fixture_provenance": GOVERNANCE["provenance"],
         "note": (
-            "Local prototype health only. This is not a production readiness "
+            "Prototype health only. This is not a production readiness "
             "signal."
         ),
     }

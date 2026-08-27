@@ -45,6 +45,9 @@ export async function refreshSystemStatus() {
     document.getElementById("topbar-threshold-version").textContent =
       `threshold: ${h.threshold_version}`;
     document.getElementById("topbar-threshold-version").title = h.threshold_version;
+    document.getElementById("mode-strip").textContent = h.runtime_mode === "vercel_demo"
+      ? "HOSTED DEMO | EPHEMERAL WORKFLOW STATE | SIMULATED TRANSACTION PLANE"
+      : "LOCAL DEMO | EVALUATION HOLDOUT | SIMULATED TRANSACTION PLANE";
 
     const chainOk = h.audit_chain_status === "valid";
     document.getElementById("topbar-audit-status").textContent =
@@ -57,6 +60,8 @@ export async function refreshSystemStatus() {
     setStatus("audit", h.audit_chain_status, chainOk ? "ok" : "error");
     setStatus("plane", h.data_plane_status, "sim");
   } catch {
+    document.getElementById("mode-strip").textContent =
+      "DEMO UNAVAILABLE | BACKEND HEALTH CHECK FAILED";
     document.getElementById("topbar-model-version").textContent = "model: unavailable";
     document.getElementById("topbar-threshold-version").textContent = "threshold: unavailable";
     document.getElementById("topbar-audit-status").textContent = "audit: unknown";

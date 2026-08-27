@@ -10,6 +10,7 @@ from __future__ import annotations
 import importlib
 import json
 import sqlite3
+import tempfile
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -56,6 +57,25 @@ def test_health_reports_active_model_and_valid_chain(client):
     assert body["model_version"] == "muleshield_cat25_preplgb75_fixed_oof_ecdf_20260825"
     assert body["threshold_version"] == "single_row_oof_ecdf_5x5_seed42_fpr_v1_20260825"
     assert body["audit_chain_status"] == "valid"
+    assert body["persistence"]["scope"] == "local_host"
+    assert body["persistence"]["durable"] is True
+
+
+def test_vercel_uses_writable_ephemeral_storage(tmp_path, monkeypatch):
+    """The hosted function must never try to write into its source bundle."""
+    monkeypatch.delenv("MULESHIELD_CONSOLE_DB", raising=False)
+    monkeypatch.setenv("VERCEL", "1")
+    monkeypatch.setattr(tempfile, "gettempdir", lambda: str(tmp_path))
+
+    from app.services import store
+    importlib.reload(store)
+
+    assert store.DB_PATH == tmp_path / "muleshield-console.db"
+    assert store.PERSISTENCE["scope"] == "function_instance"
+    assert store.PERSISTENCE["durable"] is False
+    assert store.PERSISTENCE["shared_across_instances"] is False
+    store.init_db()
+    assert store.DB_PATH.is_file()
 
 
 # ------------------------------------------------------------------- queue

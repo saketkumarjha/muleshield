@@ -35,6 +35,20 @@ Then open <http://localhost:8000>.
 The demo database is created at `data/console.db` on first start. It is never
 cleared automatically — see **Rehearsal reset** below.
 
+### Hosted Vercel demo
+
+Vercel detects `app/main.py` as a FastAPI entry point without a custom routing
+file. The deployed function uses its writable temporary directory for SQLite;
+the packaged source tree is read-only. This prevents startup failure, but it is
+not durable storage: state is isolated to a function instance and may disappear
+on a cold start or differ between concurrent instances. The console and health
+endpoint label this limitation explicitly.
+
+Use the local console for a stable rehearsal. A genuinely hosted,
+multi-instance maker-checker workflow requires an external transactional
+database; temporary Vercel SQLite must not be presented as production-grade or
+durable persistence.
+
 ### Tests
 
 ```bash
